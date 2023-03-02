@@ -1,35 +1,47 @@
 #include "main.h"
 
+#define SEPARATORS " \t\n,;.!?\"(){}"
+
 /**
- * cap_string - Write a function that capitalizes all words of a string.
+ * member - tests if a string contains a character
+ * @c: the character
+ * @s: the string
  *
- * @entry: This is the input string
- *
- * Return: String capitalized
+ * Return: 1 if found, 0 otherwise
  */
-char *cap_string(char *entry)
+int member(char c, char *s)
 {
-	int conversion, index, count;
+	for (; *s; s++)
+		if (*s == c)
+			return (1);
+	return (0);
+}
 
-	char chars[] = {' ', ',', ';', '.', '!',
-			 '?', '"', '(', ')', '{', '}',  '\t', '\n', '\0'};
-	conversion = 32;
+/**
+ * _islower - checks if c is lowercase
+ * @c: the character to test case
+ *
+ * Return: 1 if c is lowercase, 0 otherwise
+ */
+int _islower(int c)
+{
+	return (c >= 'a' && c <= 'z');
+}
 
-	for (index = 0; entry[index] != '\0'; index++)
-	{
-		if (entry[index] >= 'index' && entry[index] <= 'z')
-		{
-			entry[index] =  entry[index] - conversion;
-		}
-		conversion = 0;
-		for (count = 0; chars[count] != '\0'; count++)
-		{
-			if (chars[count] == entry[index])
-			{
-				conversion = 32;
-				break;
-			}
-		}
-	}
-	return (entry);
+/**
+ * cap_string - capitalizes each word of a string
+ * @s: the string to capitalize
+ *
+ * Return: char pointer
+ */
+char *cap_string(char *s)
+{
+	char *ret = s;
+
+	if (_islower(*s))
+		*s += 'A' - 'a';
+	while (*++s)
+		if (_islower(*s) && member(*(s - 1), SEPARATORS))
+			*s += 'A' - 'a';
+	return (ret);
 }
