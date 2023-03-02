@@ -1,68 +1,44 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
- */
-int _strlen(char *s)
-{
-	int i = 0;
-
-	while (*s++)
-		i++;
-	return (i);
-}
-
-/**
- * rev_string - reverses a string
- * @s: the string to reverse
+ * print_buffer - prints string buffer
+ * @b: the buffer
+ * @size: size of buffer to print
  *
  * Return: void
  */
-char *rev_string(char *s)
+void print_buffer(char *b, int size)
 {
-	int l = _strlen(s), i = 0;
-	char t;
+	int o = 0, i, j;
 
-	for (i = 0; i < l / 2; i++)
+	if (size <= 0)
 	{
-		t = s[l - i - 1];
-		s[l - i - 1] = s[i];
-		s[i] = t;
+		printf("\n");
+		return;
 	}
-	return (s);
-}
-
-/**
- * infinite_add - adds arbitrarily long string of digits
- * @n1: the first digit string
- * @n2: the second digit string
- * @r: the result buffer
- * @size_r: the size of result buffer
- *
- * Return: char pointer to buffer
- */
-char *infinite_add(char *n1, char *n2, char *r, int size_r)
-{
-	int l1 = _strlen(n1), l2 = _strlen(n2), i = 0, a, b, c = 0;
-
-	for (l1--, l2--, size_r--; l1 >= 0 || l2 >= 0 || c; l1--, l2--, i++)
+	while (o < size)
 	{
-		if (i >= size_r)
-			return (0);
-		a = 0;
-		b = 0;
-		if (l1 >= 0)
-			a = n1[l1] - '0';
-		if (l2 >= 0)
-			b = n2[l2] - '0';
-		a = a + b + c;
-		c = a / 10;
-		a %= 10;
-		r[i] = a + '0';
+		j = size - o < 10 ? size - o : 10;
+		printf("%08x: ", o);
+		for (i = 0; i < 10; i++)
+		{
+			if (i < j)
+				printf("%02x", *(b + o + i));
+			else
+				printf("  ");
+			if (i % 2)
+				printf(" ");
+		}
+		for (i = 0; i < j; i++)
+		{
+			int c = *(b + o + i);
+
+			if (c < 32 || c > 132)
+				c = '.';
+			printf("%c", c);
+		}
+		printf("\n");
+		o += 10;
 	}
-	r[i] = '\0';
-	return (rev_string(r));
 }
