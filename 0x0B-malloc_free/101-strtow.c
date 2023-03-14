@@ -1,109 +1,64 @@
 #include "main.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 /**
- * wordcount - function that counts words delimited by space
- * @str: Char pointer for text blob to check
- * Return: Number of words in text blob with space as a
- * delimiter
+ * strtow - concatenates all the arguments of your program
+ *@str: string
+ *@av: arguments
+ * Return: a pointer to a new string
  */
-
-int wordcount(char *str)
-{
-
-	int i, wc = 0;
-
-	for (i = 0; str[i]; i++)
-	{
-
-		if (str[i] != ' ')
-		{
-			wc++;
-
-			for (; str[i + 1] != ' ' && str[i + 1] != '\0'; i++)
-				;
-		}
-
-	}
-	return (wc);
-}
-
-/**
- * word_len - function that counts word length delimted by space
- * @str: Char pointer for word to check
- * Return: Length of word
- */
-
-int word_len(char *str)
-{
-	int i, wl = 0;
-
-	for (i = 0; str[i] && str[i] != ' '; i++)
-		++wl;
-
-	return (wl);
-}
-
-/**
- * free_grid - function that frees a 2 dimensional grid of char pointers
- * @grid: char double pointer to be freed
- * @height: int for height of 2D array to be passed
- * Return: void
- */
-
-void free_grid(char **grid, int height)
-{
-	int k;
-
-	for (k = 0; k <= height; k++)
-		free(grid[k]);
-
-	free(grid);
-}
-
-/**
- * strtow - function that splits a string into words
- * @str: Char double pointer for string to examine
- * Return: Char double pointer of  an array of strings (words)
- */
-
 char **strtow(char *str)
 {
-	int i, j = 0, k, wc, wl;
-	char **s = NULL;
+	int i, w, j, k, count, m, wordf;
+	char **p;
+	char *x;
 
-	wc = wordcount(str);
-
-	s = malloc((sizeof(char *) * wc) + 1);
-
-	if (s == NULL || wc == 0)
+	w = 0;
+	j = 0;
+	i = 0;
+	count = 0;
+	if (*str == '\0' || str == NULL)
 		return (NULL);
-
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[i] != ' ')
+		if (str[i] == ' ' && (str[i + 1] != ' ' || str[i + 1] == '\0'))
+			w++;
+	}
+	p = (char **)malloc((w + 1) * sizeof(char *));
+	if (p == NULL)
+		return (NULL);
+	for (wordf = 0; str[wordf] && j <= w; wordf++)
+	{
+		count = 0;
+		if (str[wordf] != ' ')
 		{
-			wl = (word_len(str + i));
-			s[j] = malloc((wl + 1) * sizeof(char));
-
-			if (s[j] == NULL)
+			for (i = wordf ; str[i] != '\0'; i++)
 			{
-				free_grid(s, j);
+				if (str[i] == ' ')
+					break;
+				count++;
+			}
+			*(p + j) = (char *)malloc((count + 1) * sizeof(char));
+			if (*(p + j) == NULL)
+			{
+				for (k = 0; k <= j; k++)
+				{
+					x = p[k];
+					free(x);
+				}
+				free(p);
 				return (NULL);
 			}
-
-			for (k = 0; k < wl; i++, k++)
-				s[j][k] = str[i];
-
-			s[j][k] = '\0';
-
-			if (j == wc)
-				break;
-
+			for (m = 0; wordf < i; wordf++)
+			{
+				p[j][m] = str[wordf];
+				m++;
+			}
+			p[j][m] = '\0';
 			j++;
 		}
 	}
-
-	s[j] = '\0';
-	return (s);
+	p[j] = NULL;
+	return (p);
 }
