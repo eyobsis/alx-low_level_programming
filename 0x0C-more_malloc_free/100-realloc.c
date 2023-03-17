@@ -1,32 +1,39 @@
-#include "holberton.h"
-#include <stdlib.h>
+#include "main.h"
 
 /**
-  * _calloc - ...
-  * @nmemb: number of members
-  * @size: size
-  *
-  * Return: ...
-  */
-void *_calloc(unsigned int nmemb, unsigned int size)
+ * _realloc - reallocates a memory block
+ * @ptr: pointer to previous memory block
+ * @old_size: size in bytes of allocated space for `ptr`
+ * @new_size: size in bytes for new allocated space
+ * Return: Pointer to new memory block, or NULL if error
+ */
+
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-	int i = 0, l = 0;
-	char *p;
+	char *p, *copy;
+	unsigned int i;
 
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-
-	l = nmemb * size;
-	p = malloc(l);
-
-	if (p == NULL)
-		return (NULL);
-
-	while (i < l)
+	if (new_size == old_size)
+		return (ptr);
+	if (ptr != NULL && new_size == 0)
 	{
-		p[i] = 0;
-		i++;
+		free(ptr);
+		return (NULL);
+	}
+	if (ptr == NULL)
+	{
+		p = malloc(new_size);
+		if (p == NULL)
+			return (NULL);
+		return (p);
 	}
 
+	p = malloc(new_size);
+	if (p == NULL)
+		return (NULL);
+	copy = ptr;
+	for (i = 0; i < old_size; i++)
+		p[i] = copy[i];
+	free(ptr);
 	return (p);
 }
