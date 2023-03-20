@@ -1,53 +1,59 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "dog.h"
-int get_len(int i);
-char *str_cpy(char *dest, char *src);
+#include <stdlib.h>
+
 /**
- * new_dog - a function that creates a new dog
- * get len of name + owner, malloc them, cpy name + owner to new
- * @name: name
- * @age: age
- * @owner: owner
- * Return: 0
+ * _strcopy - copy read only data to mutatable.
+ * @dst: pointer to copy char to.
+ * @src: read only data.
+ */
+void _strcopy(char *dst, char *src)
+{
+	int i;
+
+	for (i = 0; src[i]; i++)
+		dst[i] = src[i];
+	dst[i] = '\0';
+}
+
+/**
+ * new_dog - create new dog from the dna of the first dog.
+ * @name: name of dog
+ * @age: age of dog
+ * @owner: owner of dog
+ *
+ * Return: pointer to dog
  */
 dog_t *new_dog(char *name, float age, char *owner)
 {
-	dog_t *new_name;
-	char *copy_name, *copy_owner;
-	unsigned int x, name_len = 0, owner_len = 0;
+	dog_t *d;
+	int a, b;
 
-	new_name = malloc(sizeof(dog_t));
-	if (name == NULL)
+	for (a = 0; name[a]; a++)
+		;
+	for (b = 0; owner[b]; b++)
+		;
+
+	d = malloc(sizeof(dog_t));
+	if (!d)
 		return (NULL);
-	if (name == NULL || age <= 0 || owner == NULL)
+
+	d->name = malloc(a + 1);
+	if (!d->name)
 	{
-		free(new_name);
+		free(d);
 		return (NULL);
 	}
 
-	for (x = 0; name[x] != '\0'; x++)
-		name_len++;
-
-	for (x = 0; owner[x] != '\0'; x++)
-		owner_len++;
-
-	copy_name = malloc(sizeof(char) * (name_len + 1));
-	if (copy_name == NULL)
+	d->owner = malloc(b + 1);
+	if (!d->owner)
+	{
+		free(d->name);
+		free(d);
 		return (NULL);
+	}
 
-	copy_owner = malloc(sizeof(char) * (owner_len + 1));
-	if (copy_owner == NULL)
-		return (NULL);
-
-	for (x = 0; x <= name_len; x++)
-		copy_name[x] = name[x];
-
-	for (x = 0; x <= owner_len; x++)
-		copy_owner[x] = owner[x];
-
-	new_name->name = copy_name;
-	new_name->owner = copy_owner;
-	new_name->age = age;
-	return (new_name);
+	_strcopy(d->name, name);
+	_strcopy(d->owner, owner);
+	d->age = age;
+	return (d);
 }
