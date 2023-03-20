@@ -1,17 +1,16 @@
-#include <stdio.h>
 #include "dog.h"
-
+#include <stdio.h>
 /**
- * main - check the code for Holberton School students.
+ * print_dog - prints contents of dog struct
+ * @d: some dog struct.
  *
- * Return: Always 0.
+ * Return: Nothing
  */
-int main(void)
+void print_dog(struct dog *d)
 {
-	struct dog my_dog;
-
-	my_dog.name = "Django";
-	my_dog.owner = NULL;
-	print_dog(&my_dog);
-	return (0);
+	if (!d)
+		return;
+	d->name ? printf("Name: %s\n", d->name) : printf("Name: (nil)\n");
+	d->age >= 0 ? printf("Age: %6f\n", d->age) : printf("Age: (nil)\n");
+	d->owner ? printf("Owner: %s\n", d->owner) : printf("Owner: (nil)\n");
 }
