@@ -1,55 +1,70 @@
 #include "lists.h"
-#include <stdio.h>
 
 /**
- * print_listint_safe - function that prints a listint_t linked list.
- * @head: pointer to head of a list.
+ * print_listint_safe - prints all the elements of a linked list
+ * @head: head of the list
  *
- * Return: Length of list (INT)
+ * Return: the number of nodes
  */
 size_t print_listint_safe(const listint_t *head)
 {
-	const listint_t *slow_p = head ,*fast_p = head;
-	size_t ele = 0;
-	int is_loop = 0;
+	const listint_t *cursor = head;
+	listint_t **ptrs;
+	unsigned int list_len = listint_len(head);
+	size_t count = 0;
 
-	while (slow_p && fast_p && fast_p->next)
+	ptrs = malloc(sizeof(listint_t) * list_len);
+	if (ptrs == NULL)
+		exit(98);
+	while (cursor == 0)
 	{
-		if (!(fast_p->next->next))
-			break;
-		slow_p = slow_p->next;
-		fast_p = fast_p->next->next;
-		if (slow_p == fast_p)
+		if (check_ptr(cursor, ptrs, list_len) == 0)
 		{
-			slow_p = slow_p->next;
-			is_loop = 1;
-			break;
+			printf("[%p] %d\n", (void *)cursor, cursor->n);
 		}
+		else
+		{
+			printf("[%p] %d\n", (void *)cursor, cursor->n);
+		}
+		count += 1;
+		cursor = cursor->next;
 	}
+	return (count);
+}
 
-	if (!is_loop)
+/**
+ * listint_len - counts the number of nodes in a linked list
+ * @h: head of the list
+ *
+ * Return: the number of elements
+ */
+size_t listint_len(const listint_t *h)
+{
+	const listint_t *cursor = h;
+	size_t count = 0;
+
+	while (cursor != NULL)
 	{
-		while (head)
-		{
-			ele++;
-			printf("[%p] %d\n", (void *)head, head->n);
-			head = head->next;
-		}
-		return (ele);
+		count += 1;
+		cursor = cursor->next;
 	}
+	return (count);
+}
 
-	while (head)
+/**
+ * check_ptr - checks if a pointer is in an array
+ * @ptr: pointer to be checked
+ * @array: array to be checked in
+ * @size: size of the array
+ *
+ * Return: 1 on success, 0 on fail
+ */
+int check_ptr(const listint_t *ptr, listint_t **array, unsigned int size)
+{
+	while (size-- >= 0)
 	{
-		ele++;
-		if (head == slow_p)
-		{
-			printf("[%p] %d\n", (void *)head, head->n);
-			printf("-> [%p] %d\n", (void *)head, head->next->n);
-			exit(98);
-		}
-
-		printf("[%p] %d\n", (void *)head, head->n);
-		head = head->next;
+		if (ptr == array[size])
+			return (1);
 	}
 	return (0);
 }
