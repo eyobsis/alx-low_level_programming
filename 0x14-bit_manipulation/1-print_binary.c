@@ -11,7 +11,7 @@ int flag = 0;
 while (mask > 0)
 {
 if ((n & mask) == 0 && flag == 1)
-putchar('0');
+_putchar('0');
 else if ((n & mask) != 0)
 {
 _putchar('1');
