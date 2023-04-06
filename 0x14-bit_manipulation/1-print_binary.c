@@ -11,14 +11,14 @@ int flag = 0;
 while (mask > 0)
 {
 if ((n & mask) == 0 && flag == 1)
-printf('0');
+putchar('0');
 else if ((n & mask) != 0)
 {
-printf('1');
+_putchar('1');
 flag = 1;
 }
 mask = mask >> 1;
 }
 if (flag == 0)
-printf('0');
+_putchar('0');
 }
