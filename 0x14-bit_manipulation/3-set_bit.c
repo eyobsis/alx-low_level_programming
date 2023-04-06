@@ -7,14 +7,14 @@
  */
 int set_bit(unsigned long int *n, unsigned int index)
 {
-unsigned long int i = n ^ m;
-unsigned int count = 0;
+unsigned long int i;
 
-while (i > 0)
-{
-count += i & 1;
-i >>= 1;
-}
+	if (n == NULL)
+		return (-1);
 
-return (count);
+	i = 1 << index;
+
+	*n = *n | i;
+
+	return (1);
 }
