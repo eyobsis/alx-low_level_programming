@@ -14,21 +14,21 @@
  */
 int create_file(const char *filename, char *text_content)
 {
-	int ierr, jlen, kfd;
+	int err, len, fd;
 
-	ierr = jlen = kfd = 0;
+	err = len = fd = 0;
 	if (!filename)
 		return (-1);
 
-	kfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
-		if (kfd < 0)
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
+		if (fd < 0)
 			return (-1);
-	while (text_content && text_content[jlen])
+	while (text_content && text_content[len])
 		len++;
 
-	ierr = write(kfd, text_content, jlen);
-	if (ierr < 0)
+	err = write(fd, text_content, len);
+	if (err < 0)
 		return (-1);
-	close(kfd);
+	close(fd);
 	return (1);
 }
